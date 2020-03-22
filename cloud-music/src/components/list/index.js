@@ -1,4 +1,5 @@
 import React from 'react'
+import LazyLoad from 'react-lazyload'
 import { 
   ListWrapper,
   ListItem,
@@ -17,8 +18,10 @@ function RecommendList(props) {
               <ListItem key={item.id}>
                 <div className="img_wrapper">
                   <div className="decorate"></div>
-                    {/* 减小请求图片的尺寸 */}
+                  {/* 减小请求图片的尺寸 */}
+                  <LazyLoad placeholder={<img width="100%" height="100%" src={require ('./music.png')} alt="music"/>}>
                     <img src={item.picUrl + "?param=300x300"} width="100%" height="100%" alt="music"/>
+                  </LazyLoad>
                   <div className="play_count">
                     <i className="iconfont play">&#xe885;</i>
                     <span className="count">{item.playCount}</span>
