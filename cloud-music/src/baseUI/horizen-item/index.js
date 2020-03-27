@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
-import styled from 'styled-components';
+import React,{memo} from 'react'
+import styled from 'styled-components'
 import Scroll from '../scroll/index'
-import { PropTypes } from 'prop-types';
-import style from '../../assets/global-style';
+import {PropTypes} from 'prop-types'
+import style from '../../assets/global-style'
 
+// 父元素： display: inline-block; white-space: nowrap; 子元素： display: inline-block; 即可，
 //样式部分
 const List = styled.div`
   display: flex;
@@ -33,39 +34,23 @@ const ListItem = styled.span`
 `
 
 function Horizen(props) {
-  const [refreshCategoryScroll, setRefreshCategoryScroll] = useState(false);
-  const Category = useRef(null);
-  const { list, oldVal, title } = props;
-  const { handleClick } = props;
+  const {list,oldVal,title} = props
+  const {handleClick} = props
 
-  useEffect(() => {
-    let categoryDOM = Category.current;
-    let tagElems = categoryDOM.querySelectorAll("span");
-    let totalWidth = 0;
-    Array.from(tagElems).forEach(ele => {
-      totalWidth += ele.offsetWidth;
-    });
-    totalWidth += 2;
-    categoryDOM.style.width = `${totalWidth}px`;
-    setRefreshCategoryScroll(true);
-  }, [refreshCategoryScroll]);
-
-  const clickHandle = (item) => {
-    handleClick(item.key);
-  }
-  return ( 
-    <Scroll direction={"horizental"} refresh={true}>
-      <div ref={Category} >
+  return (
+    <Scroll direction={"horizental"}>
+      <div style={{width:'max-content'}}>
         <List>
           <span>{title}</span>
           {
             list.map((item) => {
               return (
-                <ListItem 
+                <ListItem
                   key={item.key}
-                  className={`${oldVal === item.key ? 'selected': ''}`} 
-                  onClick={() => clickHandle(item)}>
-                    {item.name}
+                  className={`${oldVal === item.key ? 'selected':''}`}
+                  onClick={()=> handleClick(item.key)}
+                >
+                  {item.name}
                 </ListItem>
               )
             })
@@ -73,17 +58,20 @@ function Horizen(props) {
         </List>
       </div>
     </Scroll>
-  );
+  )
 }
 
 Horizen.defaultProps = {
-  list: [],
-  handleClick: null
-};
+  list:[],
+  oldVal:'',
+  title:'',
+  handleClick:null
+}
 
 Horizen.propTypes = {
   list: PropTypes.array,
+  oldVal: PropTypes.string,
+  title: PropTypes.string,
   handleClick: PropTypes.func
-};
- 
+}
 export default memo(Horizen);
